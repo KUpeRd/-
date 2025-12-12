@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ShoppingCart, Plus, Minus, Trash2, X } from 'lucide-react'
+import { ShoppingCart, Plus, Minus, Trash2, X, Info } from 'lucide-react'
 
 const RestaurantOrderSystem = () => {
 	const [cart, setCart] = useState({})
@@ -463,17 +463,20 @@ const RestaurantOrderSystem = () => {
 		<div className='min-h-screen bg-gradient-to-br from-amber-50 to-orange-50'>
 			{/* Header */}
 			<div className='sticky top-0 z-50 bg-white shadow-md border-b-4 border-orange-400'>
-				<div className='max-w-7xl mx-auto px-4 py-4 flex justify-between items-center'>
-					<h1 className='text-3xl font-bold text-orange-600'>Меню ресторану</h1>
+				<div className='max-w-7xl mx-auto px-3 sm:px-4 py-3 sm:py-4 flex justify-between items-center gap-2'>
+					<h1 className='text-xl sm:text-2xl md:text-3xl font-bold text-orange-600'>
+						Меню ресторану
+					</h1>
 					<button
 						onClick={() => setShowModal(true)}
 						disabled={getTotalItems() === 0}
-						className='relative bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 text-white px-6 py-3 rounded-lg font-semibold flex items-center gap-2 transition-all disabled:cursor-not-allowed'
+						className='relative bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 text-white px-3 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold flex items-center gap-1 sm:gap-2 transition-all disabled:cursor-not-allowed text-sm sm:text-base'
 					>
-						<ShoppingCart className='w-5 h-5' />
-						Завершити замовлення
+						<ShoppingCart className='w-4 h-4 sm:w-5 sm:h-5' />
+						<span className='hidden sm:inline'>Завершити замовлення</span>
+						<span className='sm:hidden'>Кошик</span>
 						{getTotalItems() > 0 && (
-							<span className='absolute -top-2 -right-2 bg-red-500 text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold'>
+							<span className='absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center font-bold'>
 								{getTotalItems()}
 							</span>
 						)}
@@ -482,27 +485,27 @@ const RestaurantOrderSystem = () => {
 			</div>
 
 			{/* Main Content */}
-			<div className='max-w-7xl mx-auto px-4 py-8'>
+			<div className='max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-8'>
 				{Object.entries(menuData).map(([category, items]) => (
-					<div key={category} className='mb-12'>
-						<h2 className='text-2xl font-bold text-orange-700 mb-6 border-b-2 border-orange-300 pb-2'>
+					<div key={category} className='mb-8 sm:mb-12'>
+						<h2 className='text-xl sm:text-2xl font-bold text-orange-700 mb-4 sm:mb-6 border-b-2 border-orange-300 pb-2'>
 							{category}
 						</h2>
-						<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+						<div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4'>
 							{items.map(item => (
 								<div
 									key={item.id}
 									className='bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden'
 								>
-									<div className='p-3'>
-										<h3 className='text-sm font-bold text-gray-800 mb-1 min-h-[2.5rem] line-clamp-2'>
+									<div className='p-2 sm:p-3'>
+										<h3 className='text-xs sm:text-sm font-bold text-gray-800 mb-1 min-h-[2.5rem] line-clamp-2'>
 											{item.name}
 										</h3>
 										<div className='flex justify-between items-center mb-2'>
-											<span className='text-xs text-gray-500'>
+											<span className='text-[10px] sm:text-xs text-gray-500'>
 												{item.weight}
 											</span>
-											<span className='text-base font-bold text-orange-600'>
+											<span className='text-sm sm:text-base font-bold text-orange-600'>
 												{item.price.toFixed(2)} грн
 											</span>
 										</div>
@@ -511,32 +514,32 @@ const RestaurantOrderSystem = () => {
 											<div className='flex items-center justify-between gap-1'>
 												<button
 													onClick={() => updateQuantity(item.id, -1)}
-													className='bg-gray-200 hover:bg-gray-300 p-1.5 rounded transition-colors'
+													className='bg-gray-200 hover:bg-gray-300 p-1 sm:p-1.5 rounded transition-colors'
 												>
-													<Minus className='w-3 h-3' />
+													<Minus className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
 												</button>
-												<span className='text-sm font-semibold px-2'>
+												<span className='text-xs sm:text-sm font-semibold px-1 sm:px-2'>
 													{cart[item.id].quantity}
 												</span>
 												<button
 													onClick={() => updateQuantity(item.id, 1)}
-													className='bg-gray-200 hover:bg-gray-300 p-1.5 rounded transition-colors'
+													className='bg-gray-200 hover:bg-gray-300 p-1 sm:p-1.5 rounded transition-colors'
 												>
-													<Plus className='w-3 h-3' />
+													<Plus className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
 												</button>
 												<button
 													onClick={() => removeFromCart(item.id)}
-													className='bg-red-500 hover:bg-red-600 text-white p-1.5 rounded transition-colors ml-1'
+													className='bg-red-500 hover:bg-red-600 text-white p-1 sm:p-1.5 rounded transition-colors ml-1'
 												>
-													<Trash2 className='w-3 h-3' />
+													<Trash2 className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
 												</button>
 											</div>
 										) : (
 											<button
 												onClick={() => addToCart(item)}
-												className='w-full bg-orange-500 hover:bg-orange-600 text-white py-1.5 rounded text-sm font-semibold flex items-center justify-center gap-1 transition-colors'
+												className='w-full bg-orange-500 hover:bg-orange-600 text-white py-1 sm:py-1.5 rounded text-xs sm:text-sm font-semibold flex items-center justify-center gap-1 transition-colors'
 											>
-												<Plus className='w-3 h-3' />
+												<Plus className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
 												Додати
 											</button>
 										)}
@@ -550,32 +553,36 @@ const RestaurantOrderSystem = () => {
 
 			{/* Order Modal */}
 			{showModal && (
-				<div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50'>
+				<div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-50'>
 					<div className='bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col'>
-						<div className='bg-orange-500 text-white p-6 flex justify-between items-center'>
-							<h2 className='text-2xl font-bold'>Ваше замовлення</h2>
+						<div className='bg-orange-500 text-white p-4 sm:p-6 flex justify-between items-center flex-shrink-0'>
+							<h2 className='text-xl sm:text-2xl font-bold'>Ваше замовлення</h2>
 							<button
 								onClick={() => setShowModal(false)}
 								className='hover:bg-orange-600 p-2 rounded-lg transition-colors'
 							>
-								<X className='w-6 h-6' />
+								<X className='w-5 h-5 sm:w-6 sm:h-6' />
 							</button>
 						</div>
 
-						<div className='p-6 overflow-y-auto flex-1'>
+						<div className='p-4 sm:p-6 overflow-y-auto flex-1'>
 							{Object.values(cart).length === 0 ? (
 								<p className='text-center text-gray-500 py-8'>Кошик порожній</p>
 							) : (
-								<div className='space-y-4'>
+								<div className='space-y-3 sm:space-y-4'>
 									{Object.values(cart).map(item => (
 										<div
 											key={item.id}
-											className='flex justify-between items-start pb-4 border-b border-gray-200'
+											className='flex justify-between items-start pb-3 sm:pb-4 border-b border-gray-200'
 										>
-											<div className='flex-1'>
-												<h3 className='font-bold text-gray-800'>{item.name}</h3>
-												<p className='text-sm text-gray-600'>{item.weight}</p>
-												<p className='text-sm text-orange-600 font-semibold mt-1'>
+											<div className='flex-1 pr-2'>
+												<h3 className='font-bold text-gray-800 text-sm sm:text-base'>
+													{item.name}
+												</h3>
+												<p className='text-xs sm:text-sm text-gray-600'>
+													{item.weight}
+												</p>
+												<p className='text-xs sm:text-sm text-orange-600 font-semibold mt-1'>
 													{item.price.toFixed(2)} грн × {item.quantity} ={' '}
 													{(item.price * item.quantity).toFixed(2)} грн
 												</p>
@@ -586,19 +593,27 @@ const RestaurantOrderSystem = () => {
 							)}
 						</div>
 
-						<div className='border-t border-gray-200 p-6 bg-gray-50'>
+						<div className='border-t border-gray-200 p-4 sm:p-6 bg-gray-50 flex-shrink-0'>
+							<div className='bg-blue-50 border-l-4 border-blue-400 p-3 mb-4 flex gap-2'>
+								<Info className='w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5' />
+								<p className='text-sm text-blue-800'>
+									<strong>Враховуйте:</strong> До суми буде додано вартість
+									доставки та ціну на контейнери і пакети
+								</p>
+							</div>
+
 							<div className='flex justify-between items-center mb-4'>
-								<span className='text-xl font-bold text-gray-800'>
+								<span className='text-lg sm:text-xl font-bold text-gray-800'>
 									Всього до сплати:
 								</span>
-								<span className='text-3xl font-bold text-orange-600'>
+								<span className='text-2xl sm:text-3xl font-bold text-orange-600'>
 									{getTotalPrice()} грн
 								</span>
 							</div>
-							<div className='flex gap-3'>
+							<div className='flex flex-col sm:flex-row gap-3'>
 								<button
 									onClick={clearCart}
-									className='flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 rounded-lg font-semibold transition-colors'
+									className='flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 sm:py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base'
 								>
 									Очистити
 								</button>
@@ -610,7 +625,7 @@ const RestaurantOrderSystem = () => {
 										clearCart()
 										setShowModal(false)
 									}}
-									className='flex-1 bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-semibold transition-colors'
+									className='flex-1 bg-green-500 hover:bg-green-600 text-white py-2 sm:py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base'
 								>
 									Підтвердити замовлення
 								</button>
