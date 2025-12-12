@@ -17,6 +17,632 @@
 	</head>
 	<body>
 		<div id="root"></div>
-		<script type="text/babel" src="app.js"></script>
+
+		<script type="text/babel">
+			const { useState } = React
+
+			// Простые SVG иконки
+			const ShoppingCart = () => (
+				<svg
+					className='w-5 h-5'
+					fill='none'
+					stroke='currentColor'
+					viewBox='0 0 24 24'
+				>
+					<path
+						strokeLinecap='round'
+						strokeLinejoin='round'
+						strokeWidth={2}
+						d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
+					/>
+				</svg>
+			)
+
+			const Plus = ({ className }) => (
+				<svg
+					className={className}
+					fill='none'
+					stroke='currentColor'
+					viewBox='0 0 24 24'
+				>
+					<path
+						strokeLinecap='round'
+						strokeLinejoin='round'
+						strokeWidth={2}
+						d='M12 4v16m8-8H4'
+					/>
+				</svg>
+			)
+
+			const Minus = ({ className }) => (
+				<svg
+					className={className}
+					fill='none'
+					stroke='currentColor'
+					viewBox='0 0 24 24'
+				>
+					<path
+						strokeLinecap='round'
+						strokeLinejoin='round'
+						strokeWidth={2}
+						d='M20 12H4'
+					/>
+				</svg>
+			)
+
+			const Trash2 = ({ className }) => (
+				<svg
+					className={className}
+					fill='none'
+					stroke='currentColor'
+					viewBox='0 0 24 24'
+				>
+					<path
+						strokeLinecap='round'
+						strokeLinejoin='round'
+						strokeWidth={2}
+						d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
+					/>
+				</svg>
+			)
+
+			const X = ({ className }) => (
+				<svg
+					className={className}
+					fill='none'
+					stroke='currentColor'
+					viewBox='0 0 24 24'
+				>
+					<path
+						strokeLinecap='round'
+						strokeLinejoin='round'
+						strokeWidth={2}
+						d='M6 18L18 6M6 6l12 12'
+					/>
+				</svg>
+			)
+
+			const Info = ({ className }) => (
+				<svg
+					className={className}
+					fill='none'
+					stroke='currentColor'
+					viewBox='0 0 24 24'
+				>
+					<path
+						strokeLinecap='round'
+						strokeLinejoin='round'
+						strokeWidth={2}
+						d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+					/>
+				</svg>
+			)
+
+			const RestaurantOrderSystem = () => {
+				const [cart, setCart] = useState({})
+				const [showModal, setShowModal] = useState(false)
+
+				const menuData = {
+					'Перші страви': [
+						{ id: 'p1', name: 'БОРЩ', weight: '320/25', price: 48.0 },
+						{
+							id: 'p2',
+							name: 'СУП З ПЕЛЬМЕНЯМИ',
+							weight: '320/120',
+							price: 55.0,
+						},
+						{
+							id: 'p3',
+							name: 'БУЛЬЙОН КУРЯЧИЙ З ДОМАШНЬОЮ ЛОКШИНОЮ',
+							weight: '350',
+							price: 48.0,
+						},
+						{
+							id: 'p4',
+							name: "БОРЩ УКРАЇНСЬКИЙ БЕЗ М'ЯСА",
+							weight: '320/25',
+							price: 48.0,
+						},
+						{
+							id: 'p5',
+							name: "БОРЩ УКРАЇНСЬКИЙ З М'ЯСОМ",
+							weight: '320/90/25',
+							price: 62.0,
+						},
+						{
+							id: 'p6',
+							name: 'СУП КУРЯЧИЙ З ГРИБАМИ ТА ГРІНКАМИ',
+							weight: '280/20',
+							price: 43.0,
+						},
+						{ id: 'p7', name: 'СУП ГОРОХОВИЙ', weight: '350', price: 52.0 },
+					],
+					'Другі страви': [
+						{ id: 'd1', name: 'СИР ПАСТУШИЙ', weight: '1/100', price: 44.0 },
+						{
+							id: 'd2',
+							name: 'ГОЛУБЦІ ІЗ СВИНИНОЮ',
+							weight: '350',
+							price: 46.0,
+						},
+						{
+							id: 'd3',
+							name: "МЛИНЦІ З КУРЯЧИМ М'ЯСОМ",
+							weight: '1/150',
+							price: 44.0,
+						},
+						{
+							id: 'd4',
+							name: 'МЛИНЦІ З ТВОРОГОМ І СМЕТАНОЮ',
+							weight: '1/200/',
+							price: 62.0,
+						},
+						{
+							id: 'd5',
+							name: 'МЛИНЦІ З ВБУКАМИ',
+							weight: '1/185',
+							price: 48.0,
+						},
+						{
+							id: 'd6',
+							name: 'МЛИНЦІ ПО-ЗАКАРПАТСЬКІЙ В СОУСІ',
+							weight: '1/200/25',
+							price: 48.0,
+						},
+						{
+							id: 'd7',
+							name: 'ПЕЛЬМЕНІ З МАСЛОМ',
+							weight: '1/320/10',
+							price: 64.0,
+						},
+						{
+							id: 'd8',
+							name: 'СОСИСКИ ВІДВАРНІ',
+							weight: '1/100',
+							price: 44.0,
+						},
+						{
+							id: 'd9',
+							name: 'КОВБАСКИ «НЮРНБЕРЗЬКІ»',
+							weight: '1/180',
+							price: 50.0,
+						},
+						{
+							id: 'd10',
+							name: 'СПАГЕТІ З МАСЛОМ І ТВЕРДИМ СИРОМ',
+							weight: '1/300/20',
+							price: 40.0,
+						},
+						{
+							id: 'd11',
+							name: "СПАГЕТІ З М'ЯСНИМ ФАРШЕМ",
+							weight: '1/320',
+							price: 66.0,
+						},
+						{
+							id: 'd12',
+							name: 'СВИНИНА ПІКАНТНА',
+							weight: '1/135',
+							price: 96.0,
+						},
+						{
+							id: 'd13',
+							name: 'КАРТОПЛЯ, ЗАПЕЧЕНА З БЕКОНОМ',
+							weight: '1/310',
+							price: 76.0,
+						},
+						{
+							id: 'd14',
+							name: 'ТЕФТЕЛІ СВИННІ В СМЕТАННОМУ СОУСІ',
+							weight: '1/215',
+							price: 64.0,
+						},
+						{ id: 'd15', name: 'СМІРЗ З ШИНКОЮ', weight: '1/140', price: 60.0 },
+						{ id: 'd16', name: 'ОМЛЕТ СВИННИЙ', weight: '1/300', price: 110.0 },
+						{ id: 'd17', name: 'ОМЛЕТ КЕБАБ', weight: '1/100', price: 90.0 },
+					],
+					Гарніри: [
+						{ id: 'g1', name: 'КОТЛЕТА КУРЯЧА', weight: '1/95', price: 34.0 },
+						{
+							id: 'g2',
+							name: 'ВІДБИВНА СВИННА В ЯЙЦІ',
+							weight: '1/100',
+							price: 74.0,
+						},
+						{
+							id: 'g3',
+							name: 'ВІДБИВНА УКРАЇНСЬКА З ГРИБАМИ',
+							weight: '1/130',
+							price: 82.0,
+						},
+						{ id: 'g4', name: 'КАРТОПЛЯ', weight: '1/250', price: 32.0 },
+						{
+							id: 'g5',
+							name: 'КУРЯЧІ КРИЛЬЦЯ У ВЕЛИКОВОМУ СОУСІ',
+							weight: '100/70',
+							price: 74.0,
+						},
+						{
+							id: 'g6',
+							name: 'КУРЯЧЕ ФІЛЕ У СУХАРЯХ / В ЯЙЦІ',
+							weight: '1/100',
+							price: 76.0,
+						},
+						{ id: 'g7', name: 'СТЕЙК КУРЯЧИЙ', weight: '1/100', price: 74.0 },
+					],
+					Закуски: [
+						{
+							id: 'z1',
+							name: 'ГРЕЧКА ВІДВАРНА З МАСЛОМ',
+							weight: '1/200/10',
+							price: 30.0,
+						},
+						{
+							id: 'z2',
+							name: 'ГРЕЧКА ВІДВАРНА З ЧЕРВОНИМ СОУС.',
+							weight: '1/200/60',
+							price: 30.0,
+						},
+						{
+							id: 'z3',
+							name: 'РИС ПО-ЗАКАРПАТСЬКИЙ',
+							weight: '1/200',
+							price: 36.0,
+						},
+						{ id: 'z4', name: 'МАКАРОНИ', weight: '1/200/10', price: 30.0 },
+						{
+							id: 'z5',
+							name: 'ОГІРКИ З МАСЛОМ',
+							weight: '1/150/5',
+							price: 28.0,
+						},
+						{
+							id: 'z6',
+							name: 'ГОТОЧКА ПО-КРЕОЛЬСЬКІЙ',
+							weight: '1/200/100',
+							price: 30.0,
+						},
+					],
+					Соуси: [
+						{ id: 's1', name: 'СОУС СМЕТАННИЙ', weight: '1/75', price: 10.0 },
+						{
+							id: 's2',
+							name: 'СОУС СМЕТАНО-ГРИБНИЙ',
+							weight: '1/75',
+							price: 15.0,
+						},
+						{ id: 's3', name: 'СОУС ЧЕРВОНИЙ', weight: '1/75', price: 5.0 },
+						{ id: 's4', name: 'ГІРЧИЦЯ', weight: '1/30', price: 3.0 },
+						{ id: 's5', name: 'КЕТЧУП', weight: '1/30', price: 3.0 },
+						{ id: 's6', name: 'МАЙОНЕЗ', weight: '1/30', price: 10.0 },
+						{ id: 's7', name: 'СМЕТАНА', weight: '1/30', price: 5.0 },
+						{ id: 's8', name: 'БРОШ-ПІШТА', weight: '1/30', price: 8.0 },
+					],
+					Салати: [
+						{
+							id: 'sal1',
+							name: 'САЛАТ «ГУРМАН»',
+							weight: '1/150',
+							price: 48.0,
+						},
+						{
+							id: 'sal2',
+							name: 'САЛАТ «ГРЕЦЬКИЙ»',
+							weight: '1/150',
+							price: 68.0,
+						},
+						{ id: 'sal3', name: 'САЛАТ «ЦЕЗАР»', weight: '1/150', price: 62.0 },
+						{
+							id: 'sal4',
+							name: 'САЛАТ «ФІТНЕС»',
+							weight: '1/150',
+							price: 52.0,
+						},
+						{
+							id: 'sal5',
+							name: 'МОРКВА ПО - КОРЕЙСЬКІЙ',
+							weight: '1/100',
+							price: 40.0,
+						},
+						{
+							id: 'sal6',
+							name: 'САЛАТ ІЗ БУРЯКІВ',
+							weight: '1/150',
+							price: 40.0,
+						},
+						{
+							id: 'sal7',
+							name: 'САЛАТ ІЗ БУРЯКА ТА СИРУ',
+							weight: '1/150',
+							price: 43.0,
+						},
+						{
+							id: 'sal8',
+							name: 'САЛАТ ІЗ КАПУСТИ',
+							weight: '1/150',
+							price: 42.0,
+						},
+						{
+							id: 'sal9',
+							name: 'САЛАТ ІЗ СВІЖИХ КАПУСТИ',
+							weight: '1/150',
+							price: 45.0,
+						},
+						{
+							id: 'sal10',
+							name: 'САЛАТ «ПОЛЯНІКОВИЙ»',
+							weight: '1/150',
+							price: 58.0,
+						},
+						{
+							id: 'sal11',
+							name: 'САЛАТ «АСОРТІ»',
+							weight: '1/150',
+							price: 44.0,
+						},
+						{
+							id: 'sal12',
+							name: "САЛАТ «ОЛІВ'Є»",
+							weight: '1/140',
+							price: 55.0,
+						},
+						{
+							id: 'sal13',
+							name: 'САЛАТ «МІМОЗА» З ФОРЕЛЮ',
+							weight: '1/160',
+							price: 92.0,
+						},
+						{
+							id: 'sal14',
+							name: 'САЛАТ «ПОЛОДНИЧНИЙ»',
+							weight: '1/150',
+							price: 48.0,
+						},
+						{
+							id: 'sal15',
+							name: 'САЛАТ «ВЕСНЯНИЙ»',
+							weight: '1/150',
+							price: 48.0,
+						},
+					],
+				}
+
+				const addToCart = item => {
+					setCart(prev => ({
+						...prev,
+						[item.id]: {
+							...item,
+							quantity: (prev[item.id]?.quantity || 0) + 1,
+						},
+					}))
+				}
+
+				const updateQuantity = (itemId, change) => {
+					setCart(prev => {
+						const newCart = { ...prev }
+						const currentQty = newCart[itemId]?.quantity || 0
+						const newQty = currentQty + change
+
+						if (newQty <= 0) {
+							delete newCart[itemId]
+						} else {
+							newCart[itemId] = { ...newCart[itemId], quantity: newQty }
+						}
+
+						return newCart
+					})
+				}
+
+				const removeFromCart = itemId => {
+					setCart(prev => {
+						const newCart = { ...prev }
+						delete newCart[itemId]
+						return newCart
+					})
+				}
+
+				const getTotalPrice = () => {
+					return Object.values(cart)
+						.reduce((sum, item) => sum + item.price * item.quantity, 0)
+						.toFixed(2)
+				}
+
+				const getTotalItems = () => {
+					return Object.values(cart).reduce(
+						(sum, item) => sum + item.quantity,
+						0
+					)
+				}
+
+				const clearCart = () => {
+					setCart({})
+				}
+
+				return (
+					<div className='min-h-screen bg-gradient-to-br from-amber-50 to-orange-50'>
+						<div className='sticky top-0 z-50 bg-white shadow-md border-b-4 border-orange-400'>
+							<div className='max-w-7xl mx-auto px-3 sm:px-4 py-3 sm:py-4 flex justify-between items-center gap-2'>
+								<h1 className='text-xl sm:text-2xl md:text-3xl font-bold text-orange-600'>
+									Меню ресторану
+								</h1>
+								<button
+									onClick={() => setShowModal(true)}
+									disabled={getTotalItems() === 0}
+									className='relative bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 text-white px-3 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold flex items-center gap-1 sm:gap-2 transition-all disabled:cursor-not-allowed text-sm sm:text-base'
+								>
+									<ShoppingCart />
+									<span className='hidden sm:inline'>Завершити замовлення</span>
+									<span className='sm:hidden'>Кошик</span>
+									{getTotalItems() > 0 && (
+										<span className='absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center font-bold'>
+											{getTotalItems()}
+										</span>
+									)}
+								</button>
+							</div>
+						</div>
+
+						<div className='max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-8'>
+							{Object.entries(menuData).map(([category, items]) => (
+								<div key={category} className='mb-8 sm:mb-12'>
+									<h2 className='text-xl sm:text-2xl font-bold text-orange-700 mb-4 sm:mb-6 border-b-2 border-orange-300 pb-2'>
+										{category}
+									</h2>
+									<div className='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4'>
+										{items.map(item => (
+											<div
+												key={item.id}
+												className='bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden'
+											>
+												<div className='p-2 sm:p-3'>
+													<h3 className='text-xs sm:text-sm font-bold text-gray-800 mb-1 min-h-[2.5rem] line-clamp-2'>
+														{item.name}
+													</h3>
+													<div className='flex justify-between items-center mb-2'>
+														<span className='text-[10px] sm:text-xs text-gray-500'>
+															{item.weight}
+														</span>
+														<span className='text-sm sm:text-base font-bold text-orange-600'>
+															{item.price.toFixed(2)} грн
+														</span>
+													</div>
+
+													{cart[item.id] ? (
+														<div className='flex items-center justify-between gap-1'>
+															<button
+																onClick={() => updateQuantity(item.id, -1)}
+																className='bg-gray-200 hover:bg-gray-300 p-1 sm:p-1.5 rounded transition-colors'
+															>
+																<Minus className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
+															</button>
+															<span className='text-xs sm:text-sm font-semibold px-1 sm:px-2'>
+																{cart[item.id].quantity}
+															</span>
+															<button
+																onClick={() => updateQuantity(item.id, 1)}
+																className='bg-gray-200 hover:bg-gray-300 p-1 sm:p-1.5 rounded transition-colors'
+															>
+																<Plus className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
+															</button>
+															<button
+																onClick={() => removeFromCart(item.id)}
+																className='bg-red-500 hover:bg-red-600 text-white p-1 sm:p-1.5 rounded transition-colors ml-1'
+															>
+																<Trash2 className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
+															</button>
+														</div>
+													) : (
+														<button
+															onClick={() => addToCart(item)}
+															className='w-full bg-orange-500 hover:bg-orange-600 text-white py-1 sm:py-1.5 rounded text-xs sm:text-sm font-semibold flex items-center justify-center gap-1 transition-colors'
+														>
+															<Plus className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
+															Додати
+														</button>
+													)}
+												</div>
+											</div>
+										))}
+									</div>
+								</div>
+							))}
+						</div>
+
+						{showModal && (
+							<div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-50'>
+								<div className='bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col'>
+									<div className='bg-orange-500 text-white p-4 sm:p-6 flex justify-between items-center flex-shrink-0'>
+										<h2 className='text-xl sm:text-2xl font-bold'>
+											Ваше замовлення
+										</h2>
+										<button
+											onClick={() => setShowModal(false)}
+											className='hover:bg-orange-600 p-2 rounded-lg transition-colors'
+										>
+											<X className='w-5 h-5 sm:w-6 sm:h-6' />
+										</button>
+									</div>
+
+									<div className='p-4 sm:p-6 overflow-y-auto flex-1'>
+										{Object.values(cart).length === 0 ? (
+											<p className='text-center text-gray-500 py-8'>
+												Кошик порожній
+											</p>
+										) : (
+											<div className='space-y-3 sm:space-y-4'>
+												{Object.values(cart).map(item => (
+													<div
+														key={item.id}
+														className='flex justify-between items-start pb-3 sm:pb-4 border-b border-gray-200'
+													>
+														<div className='flex-1 pr-2'>
+															<h3 className='font-bold text-gray-800 text-sm sm:text-base'>
+																{item.name}
+															</h3>
+															<p className='text-xs sm:text-sm text-gray-600'>
+																{item.weight}
+															</p>
+															<p className='text-xs sm:text-sm text-orange-600 font-semibold mt-1'>
+																{item.price.toFixed(2)} грн × {item.quantity} ={' '}
+																{(item.price * item.quantity).toFixed(2)} грн
+															</p>
+														</div>
+													</div>
+												))}
+											</div>
+										)}
+									</div>
+
+									<div className='border-t border-gray-200 p-4 sm:p-6 bg-gray-50 flex-shrink-0'>
+										<div className='bg-blue-50 border-l-4 border-blue-400 p-3 mb-4 flex gap-2'>
+											<Info className='w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5' />
+											<p className='text-sm text-blue-800'>
+												<strong>Враховуйте:</strong> До суми буде додано
+												вартість доставки та ціну на контейнери і пакети
+											</p>
+										</div>
+
+										<div className='flex justify-between items-center mb-4'>
+											<span className='text-lg sm:text-xl font-bold text-gray-800'>
+												Всього до сплати:
+											</span>
+											<span className='text-2xl sm:text-3xl font-bold text-orange-600'>
+												{getTotalPrice()} грн
+											</span>
+										</div>
+										<div className='flex flex-col sm:flex-row gap-3'>
+											<button
+												onClick={clearCart}
+												className='flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 sm:py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base'
+											>
+												Очистити
+											</button>
+											<button
+												onClick={() => {
+													alert(
+														`Замовлення оформлено!\nВсього: ${getTotalPrice()} грн`
+													)
+													clearCart()
+													setShowModal(false)
+												}}
+												className='flex-1 bg-green-500 hover:bg-green-600 text-white py-2 sm:py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base'
+											>
+												Підтвердити замовлення
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						)}
+					</div>
+				)
+			}
+
+			// Рендеримо компонент
+			ReactDOM.render(
+				<RestaurantOrderSystem />,
+				document.getElementById('root')
+			)
+		</script>
 	</body>
 </html>
