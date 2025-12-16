@@ -134,12 +134,29 @@
 				</svg>
 			)
 
+			const Send = ({ className }) => (
+				<svg
+					className={className}
+					fill='none'
+					stroke='currentColor'
+					viewBox='0 0 24 24'
+				>
+					<path
+						strokeLinecap='round'
+						strokeLinejoin='round'
+						strokeWidth={2}
+						d='M12 19l9 2-9-18-9 18 9-2zm0 0v-8'
+					/>
+				</svg>
+			)
+
 			const RestaurantOrderSystem = () => {
 				const [cart, setCart] = useState({})
 				const [showModal, setShowModal] = useState(false)
 				const [containers, setContainers] = useState(0)
 				const [packages, setPackages] = useState(0)
 				const [deliveryPeople, setDeliveryPeople] = useState(1)
+				const [isSending, setIsSending] = useState(false)
 
 				const menuData = {
 					'Перші страви': [
@@ -581,10 +598,13 @@
 
 				const clearCart = () => {
 					setCart({})
+					setContainers(0)
+					setPackages(0)
+					setDeliveryPeople(1)
 				}
 
 				const copyOrderToClipboard = () => {
-					let orderText = '📋 ЗАМОВЛЕННЯ:\n'
+					let orderText = '📋 ЗАМОВЛЕННЯ:\n\n'
 
 					Object.values(cart).forEach(item => {
 						orderText += `${item.name}\n${item.quantity}шт\n\n`
@@ -598,6 +618,54 @@
 						.catch(() => {
 							alert('❌ Помилка копіювання')
 						})
+				}
+
+				// ФУНКЦІЯ ВІДПРАВКИ В TELEGRAM
+				const sendOrderToTelegram = async () => {
+					if (isSending) return
+
+					setIsSending(true)
+
+					try {
+						const orderData = {
+							items: Object.values(cart).map(item => ({
+								name: item.name,
+								quantity: item.quantity,
+								price: item.price,
+							})),
+							dishesTotal: getDishesTotal(),
+							containers: containers,
+							packages: packages,
+							deliveryPeople: deliveryPeople,
+							deliveryCost: (80 / deliveryPeople).toFixed(2),
+							total: getTotalPrice(),
+						}
+
+						const response = await fetch(API_URL, {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify(orderData),
+						})
+
+						const result = await response.json()
+
+						if (result.success) {
+							alert('✅ Замовлення успішно відправлено в Telegram!')
+							clearCart()
+							setShowModal(false)
+						} else {
+							alert('❌ Помилка: ' + (result.error || 'Спробуйте ще раз'))
+						}
+					} catch (error) {
+						console.error('Error:', error)
+						alert(
+							'❌ Помилка відправки замовлення. Перевірте підключення до інтернету.'
+						)
+					} finally {
+						setIsSending(false)
+					}
 				}
 
 				return (
@@ -700,7 +768,7 @@
 										<div className='flex gap-2'>
 											<button
 												onClick={copyOrderToClipboard}
-												className='bg-green-600 hover:bg-green-700 p-2 rounded-lg transition-colors flex items-center gap-2'
+												className='bg-white bg-opacity-20 hover:bg-opacity-30 p-2 rounded-lg transition-colors flex items-center gap-2'
 												title='Скопіювати замовлення'
 											>
 												<Copy className='w-5 h-5' />
@@ -710,7 +778,7 @@
 											</button>
 											<button
 												onClick={() => setShowModal(false)}
-												className='hover:bg-orange-600 p-2 rounded-lg transition-colors'
+												className='hover:bg-white hover:bg-opacity-20 p-2 rounded-lg transition-colors'
 											>
 												<X className='w-5 h-5 sm:w-6 sm:h-6' />
 											</button>
@@ -901,6 +969,25 @@
 												{getTotalPrice()} грн
 											</span>
 										</div>
+
+										{/* КНОПКА ВІДПРАВКИ В TELEGRAM */}
+										<button
+											onClick={sendOrderToTelegram}
+											disabled={isSending || Object.values(cart).length === 0}
+											className='w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white py-3 sm:py-4 rounded-lg font-bold transition-colors text-base sm:text-lg mb-3 disabled:cursor-not-allowed flex items-center justify-center gap-2'
+										>
+											{isSending ? (
+												<>
+													<div className='animate-spin rounded-full h-5 w-5 border-b-2 border-white'></div>
+													<span>Відправка...</span>
+												</>
+											) : (
+												<>
+													<Send className='w-5 h-5' />
+													<span>Відправити замовлення в Telegram</span>
+												</>
+											)}
+										</button>
 
 										<button
 											onClick={clearCart}
