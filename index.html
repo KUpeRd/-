@@ -583,42 +583,14 @@
 				}
 
 				const copyOrderToClipboard = () => {
-					let orderText = '📋 ЗАМОВЛЕННЯ:\n\n'
+					let orderText = '📋 ЗАМОВЛЕННЯ:\n'
 
 					Object.values(cart).forEach(item => {
-						orderText += `${item.name}\n${item.weight}\n${item.price.toFixed(
-							2
-						)} грн × ${item.quantity} = ${(item.price * item.quantity).toFixed(
-							2
-						)} грн\n\n`
+						orderText += `${item.name}\n${item.quantity}шт\n\n`
 					})
 
-					orderText += '═══════════════════\n\n'
-					orderText += `💰 Страви: ${getDishesTotal()} грн\n`
-
-					if (containers > 0) {
-						orderText += `📦 Контейнери (${containers}): ${(
-							containers * 15
-						).toFixed(2)} грн\n`
-					}
-					if (packages > 0) {
-						orderText += `🛍️ Пакети (${packages}): ${(packages * 4).toFixed(
-							2
-						)} грн\n`
-					}
-
-					orderText += `🚚 Доставка (на ${deliveryPeople} ${
-						deliveryPeople === 1
-							? 'людину'
-							: deliveryPeople < 5
-							? 'людини'
-							: 'людей'
-					}): ${(80 / deliveryPeople).toFixed(2)} грн\n\n`
-					orderText += `═══════════════════\n`
-					orderText += `💵 ВСЬОГО: ${getTotalPrice()} грн`
-
 					navigator.clipboard
-						.writeText(orderText)
+						.writeText(orderText.trim())
 						.then(() => {
 							alert('✅ Замовлення скопійовано в буфер обміну!')
 						})
